@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20161015015725"
+  },
+  "globalDependencies": {
+    "screeps": "github:screepers/Screeps-Typescript-Declarations/dist/screeps.d.ts#master"
+  }
+}
