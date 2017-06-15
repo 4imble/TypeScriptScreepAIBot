@@ -5,7 +5,9 @@
         "noImplicitAny": false,
         "removeComments": true,
         "preserveConstEnums": true,
-        "inlineSourceMap": false
+        "inlineSourceMap": false,
+        "types": ["lodash"],
+        "allowJs": true    
     },
     "exclude": [
         "node_modules"

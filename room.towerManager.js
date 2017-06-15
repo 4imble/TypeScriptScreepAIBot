@@ -1,16 +1,16 @@
+"use strict";
 module.exports = {
-    run: function() {
-        var tower = Game.getObjectById('5941ab9646df1f4a0a609cfd');
-        if(tower.repair) {
+    run: function () {
+        var tower = Game.getObjectById('5bb20ad44d6d2ba8602bc8ca');
+        if (tower) {
             var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < structure.hitsMax
+                filter: function (structure) { return structure.hits < structure.hitsMax; }
             });
-            if(closestDamagedStructure) {
+            if (closestDamagedStructure) {
                 tower.repair(closestDamagedStructure);
             }
-    
             var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-            if(closestHostile) {
+            if (closestHostile) {
                 tower.attack(closestHostile);
             }
         }

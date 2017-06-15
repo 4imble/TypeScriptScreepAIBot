@@ -1,5 +1,5 @@
 "use strict";
-var roleHarvester = {
+var roleTowerLord = {
     run: function (creep) {
         if (creep.carry.energy < creep.carryCapacity) {
             creep.say("gathering");
@@ -8,10 +8,7 @@ var roleHarvester = {
         else {
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: function (structure) {
-                    return (structure.structureType == STRUCTURE_EXTENSION ||
-                        structure.structureType == STRUCTURE_SPAWN ||
-                        structure.structureType == STRUCTURE_TOWER)
-                        && structure.energy < structure.energyCapacity;
+                    return structure.structureType == STRUCTURE_TOWER;
                 }
             });
             if (targets.length > 0) {
@@ -22,4 +19,4 @@ var roleHarvester = {
         }
     }
 };
-module.exports = roleHarvester;
+module.exports = roleTowerLord;

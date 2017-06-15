@@ -1,6 +1,6 @@
 "use strict";
 var gameStats = {
-    run: function (room) {
+    run: function () {
         for (var name in Game.rooms) {
             var room = Game.rooms[name];
             var thingsToBuild = room.find(FIND_CONSTRUCTION_SITES);
