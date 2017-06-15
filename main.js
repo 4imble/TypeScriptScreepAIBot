@@ -24,6 +24,6 @@ module.exports.loop = function () {
         }
     }
 
-    towerManager.run();
+    // towerManager.run();
     
 } 
