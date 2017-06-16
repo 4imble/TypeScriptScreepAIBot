@@ -33,6 +33,6 @@ export = {
             }
         }
 
-        //towerManager.run();
+        towerManager.run();
     }
 } 
