@@ -17,16 +17,7 @@ var roleBuilder = {
                 }
             }
             else {
-                var repairs = creep.room.find(FIND_STRUCTURES, {
-                    filter: function (object) { return object.hits < (object.hitsMax / 4); }
-                });
-                repairs.sort(function (a, b) { return a.hits - b.hits; });
-                if (repairs.length > 0) {
-                    creep.say('🚧 repair');
-                    if (creep.repair(repairs[0]) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(repairs[0], { visualizePathStyle: { stroke: '#9af441' } });
-                    }
-                }
+                creep.memory.role = "gatherer";
             }
         }
         else {

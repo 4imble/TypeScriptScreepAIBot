@@ -8,22 +8,40 @@ var spawnManager = {
                 delete Memory.creeps[name];
             }
         }
-        var harvesters = _.filter(Game.creeps, function (creep) { return creep.memory.role == 'harvester'; });
-        var upgraders = _.filter(Game.creeps, function (creep) { return creep.memory.role == 'upgrader'; });
-        var builders = _.filter(Game.creeps, function (creep) { return creep.memory.role == 'builder'; });
-        console.log("Harvesters: " + harvesters.length + ", Upgraders: " + upgraders.length + ", Builders: " + builders.length);
-        var body = bodyCalc.getBody(spawn.room);
-        if (spawn.canCreateCreep(body) == 0) {
-            var sources = spawn.room.find(FIND_SOURCES);
-            var randomSource = Math.floor((Math.random() * sources.length));
-            spawn.createCreep(body, undefined, { role: 'gatherer', source: randomSource });
+        var roomEnergy = _.sum(_.map(spawn.room.find(FIND_SOURCES), function (source) { return source.energy; }));
+        if (roomEnergy < 1000 && spawn.memory.warbuilding != true) {
+            var spawn_1 = Game.spawns['OriginSpawn'];
+            spawn_1.memory.warbuilding = true;
+            spawn_1.memory.warriors = 0;
+        }
+        console.log("warbuilding: " + spawn.memory.warbuilding);
+        if (spawn.memory.warbuilding != true) {
+            var body = bodyCalc.getWorker(spawn.room);
+            console.log("attempting to make worker");
+            if (spawn.canCreateCreep(body) == 0) {
+                var sources = spawn.room.find(FIND_SOURCES);
+                var randomSource = Math.floor((Math.random() * sources.length));
+                spawn.createCreep(body, undefined, { role: 'gatherer', source: randomSource });
+            }
         }
         else {
-            console.log(spawn.canCreateCreep(body));
-        }
-        if (spawn.spawning) {
-            var spawningCreep = Game.creeps[spawn.spawning.name];
-            spawn.room.visual.text('🛠️' + spawningCreep.memory.role, spawn.pos.x + 1, spawn.pos.y, { align: 'left', opacity: 0.8 });
+            console.log("attempting to make warrior");
+            var body = bodyCalc.getWarrior(spawn.room);
+            if (spawn.canCreateCreep(body) == 0) {
+                spawn.memory.warriors += 1;
+                spawn.createCreep(body, undefined, { role: 'warrior_defender' });
+            }
+            if (spawn.memory.warriors >= 4) {
+                for (var name in Game.creeps) {
+                    var creep = Game.creeps[name];
+                    if (creep.memory.role == 'warrior_defender') {
+                        creep.memory.role = "warrior_attacker";
+                        console.log(name + " now attacking");
+                    }
+                }
+                spawn.memory.warbuilding = false;
+                spawn.memory.warriors = 0;
+            }
         }
     }
 };
