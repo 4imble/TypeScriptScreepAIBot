@@ -1,3 +1,5 @@
+import roadMaker = require("./roadMaker");
+
 var roleUpgrader = {
 
     run: function(creep: Creep) {
@@ -12,6 +14,7 @@ var roleUpgrader = {
 
 	    if(creep.memory.upgrading) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                roadMaker.run(creep, creep.room.controller);
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#41d9f4'}});
             }
         }

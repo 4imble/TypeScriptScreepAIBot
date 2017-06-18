@@ -11,6 +11,8 @@ var jobManager = {
         }).length;
         var roomEnergy = _.sum(_.map(creep.room.find(FIND_SOURCES), (source: Source) => source.energy));
         
+        creep.memory.pathMade = false;
+
         if (harvesters < 2) {
             creep.say("I mule now");
             creep.memory.role = "harvester";
@@ -30,9 +32,12 @@ var jobManager = {
         }
         else {
             creep.say("I mule now");
-            creep.memory.role = "harvester";
+            creep.memory.role = "harvester";            
         }
+
     }
 }
+
+
 
 export = jobManager;

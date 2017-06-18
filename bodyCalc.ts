@@ -1,6 +1,6 @@
 var bodyCalc = {
     getWorker: function (room: Room) {
-        var desiredCost = room.find(FIND_MY_CREEPS).length == 0 ? room.energyAvailable : room.energyCapacityAvailable;
+        var desiredCost = room.find(FIND_MY_CREEPS).length == 0 ? room.energyAvailable : (room.energyCapacityAvailable);
         
         if(room.memory.storedCapacityAvailable == desiredCost)
         {

@@ -1,6 +1,8 @@
+import roadMaker = require("./roadMaker");
+
 var roleHarvester = {
     run: function(creep: Creep) {
-	    if(creep.carry.energy < creep.carryCapacity) {
+	    if(creep.carry.energy == 0) {
             creep.say("gathering")
             creep.memory.role = "gatherer";
         }
@@ -15,6 +17,7 @@ var roleHarvester = {
             });
             if(targets.length > 0) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    roadMaker.run(creep, creep.room.controller);
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
