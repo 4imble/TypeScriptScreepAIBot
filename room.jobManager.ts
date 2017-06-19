@@ -13,6 +13,8 @@ var jobManager = {
         
         creep.memory.pathMade = false;
 
+        console.log("towers: "+ emptyTowers);
+
         if (harvesters < 2) {
             creep.say("I mule now");
             creep.memory.role = "harvester";
@@ -21,7 +23,7 @@ var jobManager = {
             creep.say("I upg now");
             creep.memory.role = "upgrader";
         }
-        else if (emptyTowers > 1 && towerlords < 2)
+        else if (emptyTowers > 0 && towerlords < 2)
         {
             creep.say("I twr lrd");
             creep.memory.role = "towerLord";

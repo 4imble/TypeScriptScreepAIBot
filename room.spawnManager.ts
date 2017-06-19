@@ -33,28 +33,30 @@ var spawnManager = {
             }
         }
         else {
-            console.log(`attempting to make warrior`);            
+            console.log(`attempting to make warrior`);
             var body = bodyCalc.getWarrior(spawn.room);
             if (spawn.canCreateCreep(body) == 0) {
                 spawn.memory.warriors += 1;
                 spawn.createCreep(body, undefined, { role: 'warrior_defender' });
             }
-            if (spawn.memory.warriors >= 4)
-            {
-                for (var name in Game.creeps) {
-                    var creep = Game.creeps[name];
-                    if (creep.memory.role == 'warrior_defender') {
-                        creep.memory.role = "warrior_attacker";
-                        console.log(`${name} now attacking`);
-                    }
-                }
+            if (spawn.memory.warriors >= 6) {
+                setTimeout(sendArmyToAttack(), 120000);
                 spawn.memory.warbuilding = false;
                 spawn.memory.warriors = 0;
             }
         }
-
-
     }
 };
+
+function sendArmyToAttack() {
+    for (var name in Game.creeps) {
+        var creep = Game.creeps[name];
+        if (creep.memory.role == 'warrior_defender') {
+            creep.memory.role = "warrior_attacker";
+            console.log(`${name} now attacking`);
+        }
+    }
+
+}
 
 export = spawnManager;
