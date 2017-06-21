@@ -5,14 +5,9 @@
         "noImplicitAny": false,
         "removeComments": true,
         "preserveConstEnums": true,
-        "inlineSourceMap": false,
-        "types": ["lodash"],
-        "outDir": "./",
-        "watch": true,
-        "rootDir": "./"
+        "inlineSourceMap": false
     },
     "exclude": [
         "node_modules"
-    ]
-    
+    ]    
 }
