@@ -1,10 +1,10 @@
-import roleHarvester = require('./role.harvester');
-import roleUpgrader = require('./role.upgrader');
-import roleBuilder = require('./role.builder');
-import roleGatherer = require('./role.gatherer');
-import towerLord = require('./role.towerLord');
-import warrior_defender = require('./role.warrior_defender');
-import warrior_attacker = require('./role.warrior_attacker');
+import roleHarvester = require('./roles/role.harvester');
+import roleUpgrader = require('./roles/role.upgrader');
+import roleBuilder = require('./roles/role.builder');
+import roleGatherer = require('./roles/role.gatherer');
+import towerLord = require('./roles/role.towerLord');
+import warrior_defender = require('./roles/role.warrior_defender');
+import warrior_attacker = require('./roles/role.warrior_attacker');
 
 import spawnManager = require('./room.spawnManager');
 import gameStats = require('./game.stats');

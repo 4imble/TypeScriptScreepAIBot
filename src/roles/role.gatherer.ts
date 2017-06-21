@@ -1,4 +1,4 @@
-import jobManager = require('./room.jobManager');
+import jobManager = require('../room.jobManager');
 
 var roleGatherer = {
     run: function(creep) {

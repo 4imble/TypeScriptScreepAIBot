@@ -1,4 +1,4 @@
-import roadMaker = require("./roadMaker");
+import roadMaker = require("../roadMaker");
 
 var roleHarvester = {
     run: function(creep: Creep) {

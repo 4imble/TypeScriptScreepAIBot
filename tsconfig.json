@@ -7,9 +7,12 @@
         "preserveConstEnums": true,
         "inlineSourceMap": false,
         "types": ["lodash"],
-        "allowJs": true    
+        "outDir": "./",
+        "watch": true,
+        "rootDir": "./"
     },
     "exclude": [
         "node_modules"
     ]
+    
 }
