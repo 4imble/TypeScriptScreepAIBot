@@ -1,11 +1,11 @@
 export = {
     run: function (creep: Creep) {
         var controller = creep.room.controller;
-        var storage = controller.pos.findInRange<Container>(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_STORAGE } })[0];
+        var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_STORAGE } })[0];
         var tower = _.find(creep.room.find<Tower>(FIND_STRUCTURES), (struct: Tower) => struct.structureType == STRUCTURE_TOWER);
         var construction = creep.room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES)[0];
 
-        calulateJob(creep, tower, construction);
+        calulateJob(creep, tower, construction, storage);
 
         if (creep.memory.job == "upgrading") {
             upgradeController(creep, controller);
@@ -25,8 +25,8 @@ export = {
     }
 };
 
-function calulateJob(creep: Creep, tower: Tower, construction: ConstructionSite) {
-    if (creep.carry.energy == creep.carryCapacity) {
+function calulateJob(creep: Creep, tower: Tower, construction: ConstructionSite, storage: Storage) {
+    if (creep.carry.energy == creep.carryCapacity || (!storage && construction)) {
         if (construction)
             creep.memory.job = "constructing";
         else if (tower.energy < tower.energyCapacity)
