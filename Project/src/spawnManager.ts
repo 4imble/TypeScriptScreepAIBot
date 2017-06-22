@@ -1,12 +1,10 @@
 import BodyCalulator = require('./helpers/bodyCalculator');
 
 class SpawnManager {
-    contstructor() { }
-
-    run = (): void => {
-        var spawn = Game.spawns["Spawn1"];
-        var roomSources = spawn.room.find<Source>(FIND_SOURCES);
-        var roomCreeps = spawn.room.find<Creep>(FIND_CREEPS);
+    run = (room: Room): void => {
+        var spawn = room.find<Spawn>(FIND_MY_SPAWNS)[0]
+        var roomSources = room.find<Source>(FIND_SOURCES);
+        var roomCreeps = room.find<Creep>(FIND_CREEPS);
 
         if (!spawn.spawning)
             _.forEach(roomSources, (x) => assignWorkers(x, spawn, roomCreeps));

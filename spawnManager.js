@@ -2,15 +2,14 @@
 var BodyCalulator = require("./bodyCalculator");
 var SpawnManager = (function () {
     function SpawnManager() {
-        this.run = function () {
-            var spawn = Game.spawns["Spawn1"];
-            var roomSources = spawn.room.find(FIND_SOURCES);
-            var roomCreeps = spawn.room.find(FIND_CREEPS);
+        this.run = function (room) {
+            var spawn = room.find(FIND_MY_SPAWNS)[0];
+            var roomSources = room.find(FIND_SOURCES);
+            var roomCreeps = room.find(FIND_CREEPS);
             if (!spawn.spawning)
                 _.forEach(roomSources, function (x) { return assignWorkers(x, spawn, roomCreeps); });
         };
     }
-    SpawnManager.prototype.contstructor = function () { };
     return SpawnManager;
 }());
 function assignWorkers(source, spawn, roomCreeps) {

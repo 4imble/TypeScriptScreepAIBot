@@ -2,11 +2,14 @@ import roleHarvester = require('./roles/harvester');
 import roleMule = require('./roles/mule');
 import roleWorker = require('./roles/worker');
 import SpawnManager = require('./spawnManager');
+import TowerManager = require('./towerManager');
 
 export = {
     loop: () => {
-        for (var name in Game.creeps) {
-            var creep = Game.creeps[name];
+        var myRooms = _.filter(Game.rooms, (room: Room) => room.controller.my);
+        var myCreeps = _.filter(Game.creeps, (creep: Creep) => creep.my);
+
+        _.each(myCreeps, (creep: Creep) => {
             if (creep.memory.role == 'harvester') {
                 roleHarvester.run(creep);
             }
@@ -16,8 +19,11 @@ export = {
             if (creep.memory.role == 'worker') {
                 roleWorker.run(creep);
             }
-        }
+        });
 
-        SpawnManager.run();
+        _.each(myRooms, (room:Room) => {
+            SpawnManager.run(room);
+            TowerManager.run(room);
+        });
     }
 }
