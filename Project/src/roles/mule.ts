@@ -2,7 +2,7 @@ export = {
     run: function (creep:Creep) {
         var source = Game.getObjectById<Source>(creep.memory.sourceid);
         var container = source.pos.findInRange<Container>(FIND_STRUCTURES, 1, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
-        var droppedResource = source.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 1)[0];
+        var droppedResource = source.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 2)[0];
 
         if (creep.carry.energy == creep.carryCapacity) {
             creep.memory.job = "delivering";

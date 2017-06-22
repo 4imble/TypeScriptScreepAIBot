@@ -7,7 +7,7 @@ var BodyCalculator = (function () {
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.getMuleBody = function (room) {
-            var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+            var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.getWorkerBody = function (room) {
@@ -19,7 +19,7 @@ var BodyCalculator = (function () {
         };
     }
     BodyCalculator.prototype.makeBestBodyCurrentlyPossible = function (room, bodyTemplate) {
-        var desiredCost = room.find(FIND_MY_CREEPS).length == 0 ? room.energyAvailable : room.energyCapacityAvailable;
+        var desiredCost = room.find(FIND_MY_CREEPS).length < 2 ? SPAWN_ENERGY_CAPACITY : room.energyCapacityAvailable;
         while (this.calculateCost(bodyTemplate) > desiredCost) {
             bodyTemplate = _.dropRight(bodyTemplate);
         }

@@ -10,6 +10,8 @@ export = {
         var myCreeps = _.filter(Game.creeps, (creep: Creep) => creep.my);
 
         _.each(myCreeps, (creep: Creep) => {
+            //recycleCreep(creep);
+
             if (creep.memory.role == 'harvester') {
                 roleHarvester.run(creep);
             }
@@ -21,9 +23,16 @@ export = {
             }
         });
 
-        _.each(myRooms, (room:Room) => {
+        _.each(myRooms, (room: Room) => {
             SpawnManager.run(room);
             TowerManager.run(room);
         });
     }
+}
+
+function recycleCreep(creep: Creep) {
+    var spawn = _.find(creep.room.find<Spawn>(FIND_STRUCTURES), (struct: Spawn) => struct.structureType == STRUCTURE_SPAWN);
+    creep.moveTo(spawn, { visualizePathStyle: { stroke: '#ffffff' } });
+    var creeps = spawn.pos.findInRange(FIND_MY_CREEPS, 1);
+    _.each(creeps, (x: Creep) => spawn.recycleCreep(x));
 }

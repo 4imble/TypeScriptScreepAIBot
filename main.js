@@ -4,6 +4,12 @@ var roleMule = require("./mule");
 var roleWorker = require("./worker");
 var SpawnManager = require("./spawnManager");
 var TowerManager = require("./towerManager");
+function recycleCreep(creep) {
+    var spawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return struct.structureType == STRUCTURE_SPAWN; });
+    creep.moveTo(spawn, { visualizePathStyle: { stroke: '#ffffff' } });
+    var creeps = spawn.pos.findInRange(FIND_MY_CREEPS, 1);
+    _.each(creeps, function (x) { return spawn.recycleCreep(x); });
+}
 module.exports = {
     loop: function () {
         var myRooms = _.filter(Game.rooms, function (room) { return room.controller.my; });

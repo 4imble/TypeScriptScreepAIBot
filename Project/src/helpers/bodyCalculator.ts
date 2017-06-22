@@ -6,7 +6,7 @@ class BodyCalculator {
     }
 
     getMuleBody = (room: Room): string[] => {
-        var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+        var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
 
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }
@@ -22,7 +22,7 @@ class BodyCalculator {
     }
 
     private makeBestBodyCurrentlyPossible(room: Room, bodyTemplate: string[]): string[] {
-        var desiredCost = room.find(FIND_MY_CREEPS).length == 0 ? room.energyAvailable : room.energyCapacityAvailable;
+        var desiredCost = room.find(FIND_MY_CREEPS).length < 2 ? SPAWN_ENERGY_CAPACITY : room.energyCapacityAvailable;
 
         while (this.calculateCost(bodyTemplate) > desiredCost) {
             bodyTemplate = _.dropRight(bodyTemplate);

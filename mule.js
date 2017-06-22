@@ -25,7 +25,7 @@ module.exports = {
     run: function (creep) {
         var source = Game.getObjectById(creep.memory.sourceid);
         var container = source.pos.findInRange(FIND_STRUCTURES, 1, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
-        var droppedResource = source.pos.findInRange(FIND_DROPPED_RESOURCES, 1)[0];
+        var droppedResource = source.pos.findInRange(FIND_DROPPED_RESOURCES, 2)[0];
         if (creep.carry.energy == creep.carryCapacity) {
             creep.memory.job = "delivering";
         }
