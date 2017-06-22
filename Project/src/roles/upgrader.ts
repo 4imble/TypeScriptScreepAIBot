@@ -1,12 +1,14 @@
-"use strict";
 var roleUpgrader = {
-    run: function (creep) {
+
+    run: function (creep: Creep) {
         if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
             creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#41d9f4' } });
-        if (creep.carry.energy < creep.carryCapacity)
+        
+        if (creep.carry.energy < creep.carryCapacity) 
             creep.memory.job = "requesting_energy";
-        else
+        else 
             creep.memory.job = "upgrading";
     }
 };
-module.exports = roleUpgrader;
+
+export = roleUpgrader;

@@ -2,6 +2,7 @@
 var roleHarvester = require("./harvester");
 var roleMule = require("./mule");
 var roleWorker = require("./worker");
+var roleUpgrader = require("./upgrader");
 var SpawnManager = require("./spawnManager");
 var TowerManager = require("./towerManager");
 function recycleCreep(creep) {
@@ -23,6 +24,9 @@ module.exports = {
             }
             if (creep.memory.role == 'worker') {
                 roleWorker.run(creep);
+            }
+            if (creep.memory.role == 'upgrader') {
+                roleUpgrader.run(creep);
             }
         });
         _.each(myRooms, function (room) {

@@ -12,7 +12,7 @@ class BodyCalculator {
     }
 
     getWorkerBody = (room: Room): string[] => {
-        var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK];
+        var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, CARRY];
 
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }

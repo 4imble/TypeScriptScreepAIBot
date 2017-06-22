@@ -11,7 +11,7 @@ var BodyCalculator = (function () {
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.getWorkerBody = function (room) {
-            var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK];
+            var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, CARRY];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.calculateCost = function (body) {

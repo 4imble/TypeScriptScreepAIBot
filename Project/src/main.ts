@@ -1,6 +1,7 @@
 import roleHarvester = require('./roles/harvester');
 import roleMule = require('./roles/mule');
 import roleWorker = require('./roles/worker');
+import roleUpgrader = require('./roles/upgrader');
 import SpawnManager = require('./spawnManager');
 import TowerManager = require('./towerManager');
 
@@ -20,6 +21,9 @@ export = {
             }
             if (creep.memory.role == 'worker') {
                 roleWorker.run(creep);
+            }
+            if (creep.memory.role == 'upgrader') {
+                roleUpgrader.run(creep);
             }
         });
 

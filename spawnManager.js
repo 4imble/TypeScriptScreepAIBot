@@ -13,13 +13,16 @@ var SpawnManager = (function () {
     return SpawnManager;
 }());
 function assignWorkers(source, spawn, roomCreeps) {
-    if (!_.any(roomCreeps, function (creep) { return creep.memory.sourceid == source.id && creep.memory.role == "harvester"; })) {
+    if (!_.any(roomCreeps, function (creep) { return creep.memory.role == "upgrader"; })) {
+        spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "upgrader" });
+    }
+    else if (!_.any(roomCreeps, function (creep) { return creep.memory.sourceid == source.id && creep.memory.role == "harvester"; })) {
         spawn.createCreep(BodyCalulator.getHarvesterBody(spawn.room), null, { role: "harvester", sourceid: source.id });
     }
     else if (!_.any(roomCreeps, function (creep) { return creep.memory.sourceid == source.id && creep.memory.role == "mule"; })) {
         spawn.createCreep(BodyCalulator.getMuleBody(spawn.room), null, { role: "mule", sourceid: source.id });
     }
-    else if (_.filter(roomCreeps, function (creep) { return creep.memory.role == "worker"; }).length < 3) {
+    else if (_.filter(roomCreeps, function (creep) { return creep.memory.role == "worker"; }).length < 4) {
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker" });
     }
 }

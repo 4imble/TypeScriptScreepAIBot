@@ -42,7 +42,7 @@ function deliverLoad(creep: Creep) {
     
     var workersRequestingEnergy = _.find(creep.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) => creep.memory.job == "requesting_energy");
     
-    var target = workersRequestingEnergy || emptyExtensionOrSpawn || creep.room.storage;
+    var target = emptyExtensionOrSpawn || workersRequestingEnergy || creep.room.storage;
     
     if (target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
