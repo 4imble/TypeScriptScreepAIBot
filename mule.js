@@ -1,6 +1,5 @@
 "use strict";
 function collectDroppedResource(creep, resource) {
-    console.log(creep.pickup(resource));
     if (creep.pickup(resource) == ERR_NOT_IN_RANGE) {
         creep.moveTo(resource, { visualizePathStyle: { stroke: '#ffffff' } });
     }

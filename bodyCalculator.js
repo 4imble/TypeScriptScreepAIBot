@@ -10,6 +10,10 @@ var BodyCalculator = (function () {
             var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
+        this.getWorkerBody = function (room) {
+            var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK];
+            return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+        };
         this.calculateCost = function (body) {
             return _.sum(body.map(function (b) { return BODYPART_COST[b]; }));
         };

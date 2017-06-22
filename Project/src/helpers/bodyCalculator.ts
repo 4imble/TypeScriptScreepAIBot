@@ -11,6 +11,12 @@ class BodyCalculator {
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }
 
+    getWorkerBody = (room: Room): string[] => {
+        var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK];
+
+        return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+    }
+
     calculateCost = (body: string[]): number => {
         return _.sum(body.map((b) => BODYPART_COST[b]));
     }

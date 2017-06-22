@@ -20,5 +20,8 @@ function assignWorkers(source, spawn, roomCreeps) {
     else if (!_.any(roomCreeps, function (creep) { return creep.memory.sourceid == source.id && creep.memory.role == "mule"; })) {
         spawn.createCreep(BodyCalulator.getMuleBody(spawn.room), null, { role: "mule", sourceid: source.id });
     }
+    else if (_.filter(roomCreeps, function (creep) { return creep.memory.role == "worker"; }).length < 3) {
+        spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker" });
+    }
 }
 module.exports = new SpawnManager();
