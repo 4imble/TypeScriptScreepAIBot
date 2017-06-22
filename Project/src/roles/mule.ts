@@ -1,52 +1,52 @@
 export = {
-    run: function (creep) {
-
+    run: function (creep:Creep) {
         var source = Game.getObjectById<Source>(creep.memory.sourceid);
-        var container = source.pos.findClosestByRange<Container>(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_CONTAINER } });
-        var droppedResource = source.pos.findClosestByRange<Resource>(FIND_DROPPED_ENERGY);
-
-        console.log(droppedResource);
+        var container = source.pos.findInRange<Container>(FIND_STRUCTURES, 1, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
+        var droppedResource = source.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 1)[0];
 
         if (creep.carry.energy == creep.carryCapacity) {
-            console.log("drop load");
+            creep.memory.job = "delivering";
+        }
+
+        if (creep.memory.job == "delivering") {
             deliverLoad(creep);
         }
 
         else if (droppedResource) {
-            console.log("collect res");
             collectDroppedResource(creep, droppedResource);
         }
 
         else if (container) {
-            console.log("collect cont");
             collectFromContainer(creep, container);
         }
     }
 };
 
 function collectDroppedResource(creep, resource) {
-
+    console.log(creep.pickup(resource));
     if (creep.pickup(resource) == ERR_NOT_IN_RANGE) {
-        console.log("not range");
         creep.moveTo(resource, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 }
 
 function collectFromContainer(creep, container) {
-    if (creep.withdraw(container) == ERR_NOT_IN_RANGE) {
-        console.log("not range");
+    if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(container, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 }
 
 function deliverLoad(creep) {
-    console.log("at capacity");
-    var target = _.find(creep.room.find(FIND_STRUCTURES),
-        (struct: Extension | Spawn) => (struct.structureType == STRUCTURE_EXTENSION
+    var emptyExtensionOrSpawn = _.find(creep.room.find(FIND_STRUCTURES),
+        (struct: Extension | Spawn) => ((struct.structureType == STRUCTURE_EXTENSION
             || struct.structureType == STRUCTURE_SPAWN)
-            && struct.energy < struct.energyCapacity)
-
+            && struct.energy < struct.energyCapacity));
+    
+    var target = emptyExtensionOrSpawn || creep.room.storage;
+    
     if (target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
     }
+
+    if(creep.carry.energy == 0)
+        creep.memory.job = "collecting";
 }

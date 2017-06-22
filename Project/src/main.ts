@@ -1,6 +1,6 @@
 import roleHarvester = require('./roles/harvester');
 import roleMule = require('./roles/mule');
-import spawnManager = require('./spawnManager');
+import SpawnManager = require('./spawnManager');
 
 export = {
     loop: () => {
@@ -14,6 +14,6 @@ export = {
             }
         }
 
-        spawnManager.run();
+        SpawnManager.run();
     }
 }
