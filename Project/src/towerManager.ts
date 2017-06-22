@@ -4,13 +4,13 @@ export = {
 
         _.each(towers, (tower: Tower) => {
             var closestHostile = tower.pos.findClosestByRange<Creep>(FIND_HOSTILE_CREEPS);
-            var closestInjured = _.find(tower.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) => creep.hits < creep.hitsMax);
+            var injuredAlly = _.find(tower.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) => creep.hits < creep.hitsMax);
 
             if (closestHostile) {
                 tower.attack(closestHostile);
             }
-            else if (closestInjured) {
-                tower.heal(closestInjured);
+            else if (injuredAlly) {
+                tower.heal(injuredAlly);
             }
             else {
                 var repairs = _.filter(tower.room.find<Structure>(FIND_STRUCTURES),

@@ -13,7 +13,8 @@ function deliverLoad(creep) {
     var emptyExtensionOrSpawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
         || struct.structureType == STRUCTURE_SPAWN)
         && struct.energy < struct.energyCapacity); });
-    var target = emptyExtensionOrSpawn || creep.room.storage;
+    var workersRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) { return creep.memory.job == "requesting_energy"; });
+    var target = workersRequestingEnergy || emptyExtensionOrSpawn || creep.room.storage;
     if (target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
     }
