@@ -12,7 +12,7 @@ gulp.task('build', function() {
   .pipe(tsProject())
   .pipe(flatten())
   .pipe(flattenRequires())
-  .pipe(gulp.dest('./'));
+  .pipe(gulp.dest('../'));
 });
 
 gulp.task('watch', function() {

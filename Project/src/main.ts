@@ -1,9 +1,9 @@
-"use strict";
-var roleHarvester = require("./harvester");
-var roleMule = require("./mule");
-var spawnManager = require("./spawnManager");
-module.exports = {
-    loop: function () {
+import roleHarvester = require('./roles/harvester');
+import roleMule = require('./roles/mule');
+import spawnManager = require('./spawnManager');
+
+export = {
+    loop: () => {
         for (var name in Game.creeps) {
             var creep = Game.creeps[name];
             if (creep.memory.role == 'harvester') {
@@ -13,6 +13,7 @@ module.exports = {
                 roleMule.run(creep);
             }
         }
+
         spawnManager.run();
     }
-};
+}
