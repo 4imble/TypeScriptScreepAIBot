@@ -4,7 +4,7 @@ class SpawnManager {
     run = (room: Room): void => {
         var spawn = room.find<Spawn>(FIND_MY_SPAWNS)[0]
         var roomSources = room.find<Source>(FIND_SOURCES);
-        var roomCreeps = room.find<Creep>(FIND_CREEPS);
+        var roomCreeps = room.find<Creep>(FIND_MY_CREEPS);
 
         if (!spawn.spawning)
             _.forEach(roomSources, (x) => assignWorkers(x, spawn, roomCreeps));
@@ -12,17 +12,16 @@ class SpawnManager {
 }
 
 function assignWorkers(source: Source, spawn: Spawn, roomCreeps: Creep[]) {
-    if (!_.any(roomCreeps, creep => creep.memory.role == "upgrader")) {
-        spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "upgrader" });
-    }
-
-    else if (!_.any(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "harvester")) {
+    if (!_.any(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "harvester")) {
         spawn.createCreep(BodyCalulator.getHarvesterBody(spawn.room), null, { role: "harvester", sourceid: source.id });
     }
-    else if (!_.any(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "mule")) {
+    else if (_.filter(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "mule").length < 2) {
         spawn.createCreep(BodyCalulator.getMuleBody(spawn.room), null, { role: "mule", sourceid: source.id });
     }
-    else if (_.filter(roomCreeps, creep => creep.memory.role == "worker").length < 4) {
+    else if (!_.any(roomCreeps, creep => creep.memory.role == "upgrader")) {
+        spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "upgrader" });
+    }
+    else if (_.filter(roomCreeps, creep => creep.memory.role == "worker").length < 5) {
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker" });
     }
 }

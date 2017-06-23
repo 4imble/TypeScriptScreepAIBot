@@ -22,7 +22,7 @@ class BodyCalculator {
     }
 
     private makeBestBodyCurrentlyPossible(room: Room, bodyTemplate: string[]): string[] {
-        var desiredCost = room.find(FIND_MY_CREEPS).length < 2 ? SPAWN_ENERGY_CAPACITY : room.energyCapacityAvailable;
+        var desiredCost = room.find(FIND_MY_CREEPS).length < 3 ? SPAWN_ENERGY_CAPACITY : room.energyCapacityAvailable;
 
         while (this.calculateCost(bodyTemplate) > desiredCost) {
             bodyTemplate = _.dropRight(bodyTemplate);

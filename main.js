@@ -5,6 +5,13 @@ var roleWorker = require("./worker");
 var roleUpgrader = require("./upgrader");
 var SpawnManager = require("./spawnManager");
 var TowerManager = require("./towerManager");
+function cleanMemory() {
+    for (var name in Memory.creeps) {
+        if (!Game.creeps[name]) {
+            delete Memory.creeps[name];
+        }
+    }
+}
 function recycleCreep(creep) {
     var spawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return struct.structureType == STRUCTURE_SPAWN; });
     creep.moveTo(spawn, { visualizePathStyle: { stroke: '#ffffff' } });
@@ -33,5 +40,6 @@ module.exports = {
             SpawnManager.run(room);
             TowerManager.run(room);
         });
+        cleanMemory();
     }
 };

@@ -40,7 +40,8 @@ function deliverLoad(creep: Creep) {
             || struct.structureType == STRUCTURE_SPAWN)
             && struct.energy < struct.energyCapacity));
     
-    var workersRequestingEnergy = _.find(creep.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) => creep.memory.job == "requesting_energy");
+    var workersRequestingEnergy = _.find(creep.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) => 
+                                            creep.memory.job == "requesting_energy" && creep.carry.energy == 0);
     
     var target = emptyExtensionOrSpawn || workersRequestingEnergy || creep.room.storage;
     

@@ -13,7 +13,9 @@ function deliverLoad(creep) {
     var emptyExtensionOrSpawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
         || struct.structureType == STRUCTURE_SPAWN)
         && struct.energy < struct.energyCapacity); });
-    var workersRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) { return creep.memory.job == "requesting_energy"; });
+    var workersRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) {
+        return creep.memory.job == "requesting_energy" && creep.carry.energy == 0;
+    });
     var target = emptyExtensionOrSpawn || workersRequestingEnergy || creep.room.storage;
     if (target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
