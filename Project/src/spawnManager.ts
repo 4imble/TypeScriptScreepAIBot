@@ -7,22 +7,32 @@ class SpawnManager {
         var roomCreeps = room.find<Creep>(FIND_MY_CREEPS);
 
         if (!spawn.spawning)
-            _.forEach(roomSources, (x) => assignWorkers(x, spawn, roomCreeps));
+            assignWorkers(roomSources, spawn, roomCreeps);
+        console.log("------")
     }
 }
 
-function assignWorkers(source: Source, spawn: Spawn, roomCreeps: Creep[]) {
-    if (!_.any(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "harvester")) {
-        spawn.createCreep(BodyCalulator.getHarvesterBody(spawn.room), null, { role: "harvester", sourceid: source.id });
+function assignWorkers(roomSources: Source[], spawn: Spawn, roomCreeps: Creep[]) {
+    for (let source of roomSources) {
+        if (!_.any(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "harvester")) {
+            console.log("make harverster" + source.id);
+            spawn.createCreep(BodyCalulator.getHarvesterBody(spawn.room), null, { role: "harvester", sourceid: source.id });
+            return;
+        }
+        else if (_.filter(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "mule").length < 2) {
+            console.log("make mule" + source.id);
+            spawn.createCreep(BodyCalulator.getMuleBody(spawn.room), null, { role: "mule", sourceid: source.id });
+            return;
+        }
     }
-    else if (_.filter(roomCreeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "mule").length < 2) {
-        spawn.createCreep(BodyCalulator.getMuleBody(spawn.room), null, { role: "mule", sourceid: source.id });
-    }
-    else if (!_.any(roomCreeps, creep => creep.memory.role == "upgrader")) {
+
+    if (!_.any(roomCreeps, creep => creep.memory.role == "upgrader")) {
+        console.log("make upgrader");
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "upgrader" });
     }
     else if (_.filter(roomCreeps, creep => creep.memory.role == "worker").length < 5) {
-        spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker" });
+        console.log("worker");
+        spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker", job: "requesting_energy" });
     }
 }
 

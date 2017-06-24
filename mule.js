@@ -10,18 +10,31 @@ function collectFromContainer(creep, container) {
     }
 }
 function deliverLoad(creep) {
-    var emptyExtensionOrSpawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
-        || struct.structureType == STRUCTURE_SPAWN)
-        && struct.energy < struct.energyCapacity); });
-    var workersRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) {
-        return creep.memory.job == "requesting_energy" && creep.carry.energy == 0;
-    });
-    var target = emptyExtensionOrSpawn || workersRequestingEnergy || creep.room.storage;
+    var target = getTarget(creep);
     if (target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
     }
+    else {
+        creep.memory.target = false;
+    }
     if (creep.carry.energy == 0)
         creep.memory.job = "collecting";
+}
+function getTarget(creep) {
+    if (creep.memory.target) {
+        return Game.getObjectById(creep.memory.target);
+    }
+    else {
+        var emptyExtensionOrSpawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
+            || struct.structureType == STRUCTURE_SPAWN)
+            && struct.energy < struct.energyCapacity); });
+        var workersRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) {
+            return creep.memory.job == "requesting_energy" && creep.carry.energy == 0;
+        });
+        var target = emptyExtensionOrSpawn || workersRequestingEnergy || creep.room.storage;
+        creep.memory.target = target.id;
+        return target;
+    }
 }
 module.exports = {
     run: function (creep) {

@@ -12,7 +12,7 @@ module.exports = {
                 tower.heal(injuredAlly);
             }
             else {
-                var repairs = _.filter(tower.room.find(FIND_STRUCTURES), function (struct) { return struct.hits < (struct.hitsMax / 4) && struct.structureType != STRUCTURE_WALL; });
+                var repairs = _.filter(tower.room.find(FIND_STRUCTURES), function (struct) { return struct.hits < (struct.hitsMax / 2) && struct.structureType != STRUCTURE_WALL; });
                 repairs.sort(function (a, b) { return a.hits - b.hits; });
                 if (repairs.length) {
                     tower.repair(repairs[0]);

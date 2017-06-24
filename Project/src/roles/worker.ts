@@ -29,7 +29,7 @@ function calulateJob(creep: Creep, tower: Tower, construction: ConstructionSite,
     if (creep.carry.energy == creep.carryCapacity || (!storage && construction)) {
         if (construction)
             creep.memory.job = "constructing";
-        else if (tower.energy < tower.energyCapacity)
+        else if (tower && tower.energy < tower.energyCapacity)
             creep.memory.job = "tower_refilling";
         else
             creep.memory.job = "upgrading";
