@@ -58,12 +58,16 @@ function getTarget(creep: Creep): Structure|Creep {
                 || struct.structureType == STRUCTURE_SPAWN)
                 && struct.energy < struct.energyCapacity));
 
-        var workersRequestingEnergy = _.find(creep.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) =>
-            creep.memory.job == "requesting_energy" && creep.carry.energy == 0);
+        var workersRequestingEnergy = _.filter(creep.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) =>
+            creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity);
         
-        var target = emptyExtensionOrSpawn || workersRequestingEnergy || creep.room.storage;
+        var mostEmptyWorkerRequestingEnergy = workersRequestingEnergy.sort((a, b) => a.carry.energy - b.carry.energy)[0]
 
-        creep.memory.target = target.id;
+        var target = emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || creep.room.storage;
+
+        if(target)
+            creep.memory.target = target.id;
+            
         return target;
     }
 }
