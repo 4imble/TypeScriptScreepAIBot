@@ -32,7 +32,6 @@ function getTarget(creep) {
             return creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity;
         });
         var mostEmptyWorkerRequestingEnergy = workersRequestingEnergy.sort(function (a, b) { return a.carry.energy - b.carry.energy; })[0];
-        console.log(mostEmptyWorkerRequestingEnergy.name);
         var target = emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || creep.room.storage;
         if (target)
             creep.memory.target = target.id;
