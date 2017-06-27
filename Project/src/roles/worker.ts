@@ -2,10 +2,10 @@ export = {
     run: function (creep: Creep) {
         var controller = creep.room.controller;
         var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
-        var tower = _.find(creep.room.find<Tower>(FIND_STRUCTURES), (struct: Tower) => struct.structureType == STRUCTURE_TOWER);
+        var emptyTower = _.find(creep.room.find<Tower>(FIND_STRUCTURES), (struct: Tower) => struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity);
         var construction = creep.pos.findClosestByRange<ConstructionSite>(FIND_CONSTRUCTION_SITES);
 
-        calulateJob(creep, tower, construction, storage);
+        calulateJob(creep, emptyTower, construction, storage);
 
         if (creep.memory.job == "upgrading") {
             upgradeController(creep, controller, storage);
@@ -16,7 +16,7 @@ export = {
         }
 
         else if (creep.memory.job == "tower_refilling") {
-            refillTower(creep, tower, storage);
+            refillTower(creep, emptyTower, storage);
         }
 
         else if (storage) {
@@ -25,11 +25,11 @@ export = {
     }
 };
 
-function calulateJob(creep: Creep, tower: Tower, construction: ConstructionSite, storage: Storage) {
+function calulateJob(creep: Creep, emptyTower: Tower, construction: ConstructionSite, storage: Storage) {
     if (creep.carry.energy == creep.carryCapacity || (!storage && construction)) {
         if (construction)
             creep.memory.job = "constructing";
-        else if (tower && tower.energy < tower.energyCapacity)
+        else if (emptyTower)
             creep.memory.job = "tower_refilling";
         else
             creep.memory.job = "upgrading";
@@ -53,9 +53,9 @@ function upgradeController(creep, controller, storage) {
         creep.memory.job = storage ? "collecting" : "requesting_energy";
 }
 
-function refillTower(creep, tower, storage) {
-    if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(tower, { visualizePathStyle: { stroke: '#ffffff' } });
+function refillTower(creep, emptyTower, storage) {
+    if (creep.transfer(emptyTower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(emptyTower, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 
     if (creep.carry.energy == 0)
