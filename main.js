@@ -5,7 +5,7 @@ var roleWorker = require("./worker");
 var roleUpgrader = require("./upgrader");
 var SpawnManager = require("./spawnManager");
 var TowerManager = require("./towerManager");
-var RemoteMiningOperations = require("./remoteMiningOperations");
+var RemoteOperations = require("./remoteOperations");
 function cleanMemory() {
     for (var name in Memory.creeps) {
         if (!Game.creeps[name]) {
@@ -49,7 +49,7 @@ module.exports = {
             TowerManager.run(room);
         });
         _.each(flags, function (flag) {
-            RemoteMiningOperations.run(flag);
+            RemoteOperations.run(flag);
         });
         cleanMemory();
     }

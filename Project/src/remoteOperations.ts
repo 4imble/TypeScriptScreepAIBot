@@ -1,5 +1,6 @@
 import BodyCalulator = require('./helpers/bodyCalculator');
 import roleCapturer = require('./roles/capturer');
+import roleBuilder = require('./roles/builder');
 
 export = {
     run: function (flag: Flag) {
@@ -9,14 +10,15 @@ export = {
         manageCapturer(flag);
 
         if (flag.room) {
-            manageRemoteMining(flag.room);
+            manageRemoteMining(flag);
+            manageBuilder(flag);
         }
     }
 }
 
-function manageRemoteMining(room: Room) {
+function manageRemoteMining(flag: Flag) {
     var originSpawn = Game.spawns["OriginSpawn"];
-    var roomSources = room.find<Source>(FIND_SOURCES);
+    var roomSources = flag.room.find<Source>(FIND_SOURCES);
 
     for (let source of roomSources) {
         if (!_.any(Game.creeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "harvester")) {
@@ -50,4 +52,19 @@ function manageCapturer(flag: Flag) {
     }
 
     roleCapturer.run(capturer, flag);
+}
+
+function manageBuilder(flag: Flag) {
+    var builder = _.find(Game.creeps, (creep: Creep) => flag.memory.builder && creep.name == flag.memory.builder);
+    var constructions = flag.room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES);
+
+    if (!builder && constructions) {
+        var originSpawn = Game.spawns["OriginSpawn"];
+
+        var creepName = originSpawn.createCreep(BodyCalulator.getWorkerBody(originSpawn.room), null, { role: "builder" });
+        flag.memory.builder = creepName;
+        return;
+    }
+
+    roleBuilder.run(builder, flag);
 }

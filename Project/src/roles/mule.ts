@@ -2,9 +2,9 @@ export = {
     run: function (creep: Creep) {
         var source = Game.getObjectById<Source>(creep.memory.sourceid);
         var container = source.pos.findInRange<Container>(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
-        var droppedResource = creep.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 5, 
-                                { filter: (resource: Resource) => resource.amount > 100 })[0] 
-                                    || source.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 5)[0];
+        var droppedResource = creep.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 5,
+            { filter: (resource: Resource) => resource.amount > 100 })[0]
+            || source.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 5)[0];
 
         if (creep.carry.energy == creep.carryCapacity) {
             creep.memory.job = "delivering";
@@ -50,9 +50,9 @@ function deliverLoad(creep: Creep) {
         creep.memory.job = "collecting";
 }
 
-function getTarget(creep: Creep): Structure|Creep {
+function getTarget(creep: Creep): Structure | Creep {
     if (creep.memory.target) {
-        return Game.getObjectById<Structure|Creep>(creep.memory.target);
+        return Game.getObjectById<Structure | Creep>(creep.memory.target);
     }
     else {
         var room = creep.room.controller.my ? creep.room : Game.spawns["OriginSpawn"].room;
@@ -62,16 +62,19 @@ function getTarget(creep: Creep): Structure|Creep {
                 || struct.structureType == STRUCTURE_SPAWN)
                 && struct.energy < struct.energyCapacity));
 
+        var remoteBuilderRequestingEnergy = _.find(creep.room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) =>
+            creep.memory.role == "builder" && creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity);
+
         var workersRequestingEnergy = _.filter(room.find<Creep>(FIND_MY_CREEPS), (creep: Creep) =>
             creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity);
-        
+
         var mostEmptyWorkerRequestingEnergy = workersRequestingEnergy.sort((a, b) => a.carry.energy - b.carry.energy)[0]
 
-        var target = emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || room.storage;
+        var target = remoteBuilderRequestingEnergy || emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || room.storage;
 
-        if(target)
+        if (target)
             creep.memory.target = target.id;
-            
+
         return target;
     }
 }

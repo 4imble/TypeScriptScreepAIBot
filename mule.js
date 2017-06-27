@@ -29,11 +29,14 @@ function getTarget(creep) {
         var emptyExtensionOrSpawn = _.find(room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
             || struct.structureType == STRUCTURE_SPAWN)
             && struct.energy < struct.energyCapacity); });
+        var remoteBuilderRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) {
+            return creep.memory.role == "builder" && creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity;
+        });
         var workersRequestingEnergy = _.filter(room.find(FIND_MY_CREEPS), function (creep) {
             return creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity;
         });
         var mostEmptyWorkerRequestingEnergy = workersRequestingEnergy.sort(function (a, b) { return a.carry.energy - b.carry.energy; })[0];
-        var target = emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || room.storage;
+        var target = remoteBuilderRequestingEnergy || emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || room.storage;
         if (target)
             creep.memory.target = target.id;
         return target;

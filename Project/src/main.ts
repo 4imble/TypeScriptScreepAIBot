@@ -4,7 +4,7 @@ import roleWorker = require('./roles/worker');
 import roleUpgrader = require('./roles/upgrader');
 import SpawnManager = require('./spawnManager');
 import TowerManager = require('./towerManager');
-import RemoteMiningOperations = require('./remoteMiningOperations');
+import RemoteOperations = require('./remoteOperations');
 
 export = {
     loop: () => {
@@ -36,7 +36,7 @@ export = {
         });
 
         _.each(flags, (flag:Flag) => {
-            RemoteMiningOperations.run(flag);
+            RemoteOperations.run(flag);
         });
 
         cleanMemory();
