@@ -22,6 +22,10 @@ var BodyCalculator = (function () {
             var bodyTemplate = [MOVE, WORK, CARRY, WORK, CARRY, MOVE, WORK, CARRY, MOVE];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
+        this.getProtectorBody = function (room) {
+            var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE];
+            return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+        };
         this.calculateCost = function (body) {
             return _.sum(body.map(function (b) { return BODYPART_COST[b]; }));
         };

@@ -8,7 +8,6 @@ var SpawnManager = (function () {
             var roomCreeps = room.find(FIND_MY_CREEPS);
             if (!spawn.spawning)
                 assignWorkers(roomSources, spawn, roomCreeps);
-            console.log("------");
         };
     }
     return SpawnManager;

@@ -29,6 +29,12 @@ class BodyCalculator {
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }
 
+    getProtectorBody = (room: Room): string[] => {
+        var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE];
+
+        return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+    }
+
     calculateCost = (body: string[]): number => {
         return _.sum(body.map((b) => BODYPART_COST[b]));
     }

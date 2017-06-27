@@ -2,6 +2,17 @@
 var BodyCalulator = require("./bodyCalculator");
 var roleCapturer = require("./capturer");
 var roleBuilder = require("./builder");
+var roleProtector = require("./protector");
+function manageRemoteProtection(flag) {
+    var protector = _.find(Game.creeps, function (creep) { return flag.memory.protector && creep.name == flag.memory.protector; });
+    if (!protector) {
+        var originSpawn = Game.spawns["OriginSpawn"];
+        var creepName = originSpawn.createCreep(BodyCalulator.getProtectorBody(originSpawn.room), null, { role: "protector" });
+        flag.memory.protector = creepName;
+        return;
+    }
+    roleProtector.run(protector, flag);
+}
 function manageRemoteMining(flag) {
     var originSpawn = Game.spawns["OriginSpawn"];
     var roomSources = flag.room.find(FIND_SOURCES);
@@ -45,7 +56,7 @@ function manageBuilder(flag) {
     var constructions = flag.room.find(FIND_CONSTRUCTION_SITES);
     if (!builder && constructions) {
         var originSpawn = Game.spawns["OriginSpawn"];
-        var creepName = originSpawn.createCreep(BodyCalulator.getWorkerBody(originSpawn.room), null, { role: "builder" });
+        var creepName = originSpawn.createCreep(BodyCalulator.getBuilderBody(originSpawn.room), null, { role: "builder" });
         flag.memory.builder = creepName;
         return;
     }
@@ -56,9 +67,10 @@ module.exports = {
         if (flag.memory.type != "remote_mining")
             return;
         manageCapturer(flag);
+        manageRemoteProtection(flag);
         if (flag.room) {
-            manageRemoteMining(flag);
             manageBuilder(flag);
+            manageRemoteMining(flag);
         }
     }
 };

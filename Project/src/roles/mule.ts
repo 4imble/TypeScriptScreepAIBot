@@ -1,6 +1,6 @@
 export = {
     run: function (creep: Creep) {
-        var source = Game.getObjectById<Source>(creep.memory.sourceid);
+        var source = Game.getObjectById<Source>(creep.memory.sourceid) || creep.pos.findClosestByRange<Source>(FIND_SOURCES);
         var container = source.pos.findInRange<Container>(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
         var droppedResource = creep.pos.findInRange<Resource>(FIND_DROPPED_RESOURCES, 5,
             { filter: (resource: Resource) => resource.amount > 100 })[0]

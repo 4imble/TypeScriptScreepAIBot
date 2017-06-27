@@ -17,8 +17,7 @@ export = {
                     (struct: Structure) => 
                         struct.hits < (struct.hitsMax / 4) 
                         && !(struct.structureType == STRUCTURE_WALL && struct.hits > 50000 )
-                        && !(struct.structureType == STRUCTURE_RAMPART && struct.hits > 49000 )
-                        );
+                        && !(struct.structureType == STRUCTURE_RAMPART && struct.hits > 49000 ));
 
                 repairs.sort((a, b) => a.hits - b.hits);
                 if (repairs.length) {

@@ -1,6 +1,7 @@
 import BodyCalulator = require('./helpers/bodyCalculator');
 import roleCapturer = require('./roles/capturer');
 import roleBuilder = require('./roles/builder');
+import roleProtector = require('./roles/protector');
 
 export = {
     run: function (flag: Flag) {
@@ -8,12 +9,27 @@ export = {
             return;
 
         manageCapturer(flag);
+        manageRemoteProtection(flag)
 
         if (flag.room) {
-            manageRemoteMining(flag);
             manageBuilder(flag);
+            manageRemoteMining(flag);
         }
     }
+}
+
+function manageRemoteProtection(flag: Flag) {
+    var protector = _.find(Game.creeps, (creep: Creep) => flag.memory.protector && creep.name == flag.memory.protector);
+
+    if (!protector) {
+        var originSpawn = Game.spawns["OriginSpawn"];
+
+        var creepName = originSpawn.createCreep(BodyCalulator.getProtectorBody(originSpawn.room), null, { role: "protector" });
+        flag.memory.protector = creepName;
+        return;
+    }
+
+    roleProtector.run(protector, flag);
 }
 
 function manageRemoteMining(flag: Flag) {
@@ -61,7 +77,7 @@ function manageBuilder(flag: Flag) {
     if (!builder && constructions) {
         var originSpawn = Game.spawns["OriginSpawn"];
 
-        var creepName = originSpawn.createCreep(BodyCalulator.getWorkerBody(originSpawn.room), null, { role: "builder" });
+        var creepName = originSpawn.createCreep(BodyCalulator.getBuilderBody(originSpawn.room), null, { role: "builder" });
         flag.memory.builder = creepName;
         return;
     }

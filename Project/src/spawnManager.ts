@@ -8,7 +8,6 @@ class SpawnManager {
 
         if (!spawn.spawning)
             assignWorkers(roomSources, spawn, roomCreeps);
-        console.log("------")
     }
 }
 

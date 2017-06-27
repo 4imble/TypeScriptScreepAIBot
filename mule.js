@@ -44,7 +44,7 @@ function getTarget(creep) {
 }
 module.exports = {
     run: function (creep) {
-        var source = Game.getObjectById(creep.memory.sourceid);
+        var source = Game.getObjectById(creep.memory.sourceid) || creep.pos.findClosestByRange(FIND_SOURCES);
         var container = source.pos.findInRange(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
         var droppedResource = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 5, { filter: function (resource) { return resource.amount > 100; } })[0]
             || source.pos.findInRange(FIND_DROPPED_RESOURCES, 5)[0];

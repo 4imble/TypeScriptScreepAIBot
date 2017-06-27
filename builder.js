@@ -19,10 +19,8 @@ function collectDroppedResource(creep, resource) {
 }
 module.exports = {
     run: function (creep, flag) {
-        if (creep.room != flag.room) {
-            creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
-        }
-        else {
+        creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
+        if (creep.room == flag.room) {
             var construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
             constructStructure(creep, construction);
         }

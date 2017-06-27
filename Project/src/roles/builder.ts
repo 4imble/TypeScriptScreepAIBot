@@ -1,13 +1,11 @@
 export = {
     run: function (creep: Creep, flag: Flag) {
-        if (creep.room != flag.room) {
-            creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
-        }
-        else {
+        creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
+
+        if (creep.room == flag.room) {
             var construction = creep.pos.findClosestByRange<ConstructionSite>(FIND_CONSTRUCTION_SITES);
             constructStructure(creep, construction);
         }
-
     }
 };
 
@@ -21,8 +19,7 @@ function constructStructure(creep: Creep, construction: ConstructionSite) {
         collectDroppedResource(creep, droppedResource);
         creep.memory.job = "requesting_energy";
     }
-    else
-    {
+    else {
         creep.memory.job = "contructing";
     }
 }
