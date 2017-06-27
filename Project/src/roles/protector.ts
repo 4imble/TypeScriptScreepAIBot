@@ -1,6 +1,6 @@
 export = {
     run: function (creep: Creep, flag: Flag) {
-        creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' }, maxRooms: 1 });
+        creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' }});
         
         if (flag.room && creep.room == flag.room) {
             var enemyCreeps = flag.room.find<Creep>(FIND_HOSTILE_CREEPS);

@@ -9,7 +9,7 @@ function attackEnemy(creep, enemyCreeps) {
 }
 module.exports = {
     run: function (creep, flag) {
-        creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' }, maxRooms: 1 });
+        creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
         if (flag.room && creep.room == flag.room) {
             var enemyCreeps = flag.room.find(FIND_HOSTILE_CREEPS);
             attackEnemy(creep, enemyCreeps);
