@@ -7,11 +7,15 @@ var BodyCalculator = (function () {
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.getMuleBody = function (room) {
-            var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+            var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.getWorkerBody = function (room) {
             var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, CARRY];
+            return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+        };
+        this.getCapturerBody = function (room) {
+            var bodyTemplate = [MOVE, CLAIM, CLAIM, MOVE];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.calculateCost = function (body) {

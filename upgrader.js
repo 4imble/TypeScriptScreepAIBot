@@ -1,11 +1,4 @@
 "use strict";
-var roleUpgrader = {
-    run: function (creep) {
-        var controller = creep.room.controller;
-        var storage = controller.pos.findInRange(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_STORAGE } })[0];
-        upgradeController(creep, controller, storage);
-    }
-};
 function upgradeController(creep, controller, storage) {
     if (controller && creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
         creep.moveTo(controller, { visualizePathStyle: { stroke: '#ffffff' } });
@@ -20,4 +13,13 @@ function collectFromStorage(creep, storage) {
         creep.moveTo(storage, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 }
-module.exports = roleUpgrader;
+module.exports = {
+    run: function (creep) {
+        var controller = creep.room.controller;
+        var storage = controller.pos.findInRange(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
+        upgradeController(creep, controller, storage);
+        if (storage) {
+            collectFromStorage(creep, storage);
+        }
+    }
+};

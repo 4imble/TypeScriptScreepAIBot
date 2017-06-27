@@ -25,14 +25,15 @@ function getTarget(creep) {
         return Game.getObjectById(creep.memory.target);
     }
     else {
-        var emptyExtensionOrSpawn = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
+        var room = creep.room.controller.my ? creep.room : Game.spawns["OriginSpawn"].room;
+        var emptyExtensionOrSpawn = _.find(room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
             || struct.structureType == STRUCTURE_SPAWN)
             && struct.energy < struct.energyCapacity); });
-        var workersRequestingEnergy = _.filter(creep.room.find(FIND_MY_CREEPS), function (creep) {
+        var workersRequestingEnergy = _.filter(room.find(FIND_MY_CREEPS), function (creep) {
             return creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity;
         });
         var mostEmptyWorkerRequestingEnergy = workersRequestingEnergy.sort(function (a, b) { return a.carry.energy - b.carry.energy; })[0];
-        var target = emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || creep.room.storage;
+        var target = emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || room.storage;
         if (target)
             creep.memory.target = target.id;
         return target;
@@ -41,8 +42,9 @@ function getTarget(creep) {
 module.exports = {
     run: function (creep) {
         var source = Game.getObjectById(creep.memory.sourceid);
-        var container = source.pos.findInRange(FIND_STRUCTURES, 1, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
-        var droppedResource = source.pos.findInRange(FIND_DROPPED_RESOURCES, 2)[0];
+        var container = source.pos.findInRange(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_CONTAINER } })[0];
+        var droppedResource = creep.pos.findInRange(FIND_DROPPED_RESOURCES, 5, { filter: function (resource) { return resource.amount > 100; } })[0]
+            || source.pos.findInRange(FIND_DROPPED_RESOURCES, 5)[0];
         if (creep.carry.energy == creep.carryCapacity) {
             creep.memory.job = "delivering";
         }

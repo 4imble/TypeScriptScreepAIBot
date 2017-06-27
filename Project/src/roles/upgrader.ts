@@ -1,10 +1,13 @@
-var roleUpgrader = {
-
+export = {
     run: function (creep: Creep) {
         var controller = creep.room.controller;
-        var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_STORAGE } })[0];
-        
+        var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
+
         upgradeController(creep, controller, storage);
+
+        if (storage) {
+            collectFromStorage(creep, storage);
+        }
     }
 };
 
@@ -12,7 +15,6 @@ function upgradeController(creep, controller, storage) {
     if (controller && creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
         creep.moveTo(controller, { visualizePathStyle: { stroke: '#ffffff' } });
     }
-
     if (creep.carry.energy == 0)
         creep.memory.job = storage ? "collecting" : "requesting_energy";
 }
@@ -25,5 +27,3 @@ function collectFromStorage(creep, storage) {
         creep.moveTo(storage, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 }
-
-export = roleUpgrader;

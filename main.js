@@ -5,10 +5,16 @@ var roleWorker = require("./worker");
 var roleUpgrader = require("./upgrader");
 var SpawnManager = require("./spawnManager");
 var TowerManager = require("./towerManager");
+var RemoteMiningOperations = require("./remoteMiningOperations");
 function cleanMemory() {
     for (var name in Memory.creeps) {
         if (!Game.creeps[name]) {
             delete Memory.creeps[name];
+        }
+    }
+    for (var name in Memory.flags) {
+        if (!Game.flags[name]) {
+            delete Memory.flags[name];
         }
     }
 }
@@ -21,7 +27,9 @@ function recycleCreep(creep) {
 module.exports = {
     loop: function () {
         var myRooms = _.filter(Game.rooms, function (room) { return room.controller.my; });
+        var flagRooms = _.map(_.filter(Game.flags, function (flag) { return flag.room != undefined; }), function (flag) { return flag.room; });
         var myCreeps = _.filter(Game.creeps, function (creep) { return creep.my; });
+        var flags = _.filter(Game.flags, function (flag) { return flag.memory.type != undefined; });
         _.each(myCreeps, function (creep) {
             if (creep.memory.role == 'harvester') {
                 roleHarvester.run(creep);
@@ -39,6 +47,9 @@ module.exports = {
         _.each(myRooms, function (room) {
             SpawnManager.run(room);
             TowerManager.run(room);
+        });
+        _.each(flags, function (flag) {
+            RemoteMiningOperations.run(flag);
         });
         cleanMemory();
     }

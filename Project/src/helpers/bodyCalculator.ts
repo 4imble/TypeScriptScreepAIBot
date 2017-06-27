@@ -6,13 +6,19 @@ class BodyCalculator {
     }
 
     getMuleBody = (room: Room): string[] => {
-        var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+        var bodyTemplate = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
 
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }
 
     getWorkerBody = (room: Room): string[] => {
         var bodyTemplate = [MOVE, CARRY, WORK, WORK, WORK, WORK, WORK, CARRY];
+
+        return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+    }
+
+    getCapturerBody = (room: Room): string[] => {
+        var bodyTemplate = [MOVE, CLAIM, CLAIM, MOVE];
 
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }

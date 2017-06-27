@@ -40,9 +40,9 @@ function collectFromStorage(creep, storage) {
 module.exports = {
     run: function (creep) {
         var controller = creep.room.controller;
-        var storage = controller.pos.findInRange(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_STORAGE } })[0];
+        var storage = controller.pos.findInRange(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
         var tower = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return struct.structureType == STRUCTURE_TOWER; });
-        var construction = creep.room.find(FIND_CONSTRUCTION_SITES)[0];
+        var construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
         calulateJob(creep, tower, construction, storage);
         if (creep.memory.job == "upgrading") {
             upgradeController(creep, controller, storage);

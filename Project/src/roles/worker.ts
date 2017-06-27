@@ -1,9 +1,9 @@
 export = {
     run: function (creep: Creep) {
         var controller = creep.room.controller;
-        var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 3, { filter: { structureType: STRUCTURE_STORAGE } })[0];
+        var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
         var tower = _.find(creep.room.find<Tower>(FIND_STRUCTURES), (struct: Tower) => struct.structureType == STRUCTURE_TOWER);
-        var construction = creep.room.find<ConstructionSite>(FIND_CONSTRUCTION_SITES)[0];
+        var construction = creep.pos.findClosestByRange<ConstructionSite>(FIND_CONSTRUCTION_SITES);
 
         calulateJob(creep, tower, construction, storage);
 
@@ -49,7 +49,6 @@ function upgradeController(creep, controller, storage) {
     if (controller && creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
         creep.moveTo(controller, { visualizePathStyle: { stroke: '#ffffff' } });
     }
-
     if (creep.carry.energy == 0)
         creep.memory.job = storage ? "collecting" : "requesting_energy";
 }
