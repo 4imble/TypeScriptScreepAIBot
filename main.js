@@ -44,12 +44,12 @@ module.exports = {
                 roleUpgrader.run(creep);
             }
         });
+        _.each(flags, function (flag) {
+            RemoteOperations.run(flag);
+        });
         _.each(myRooms, function (room) {
             SpawnManager.run(room);
             TowerManager.run(room);
-        });
-        _.each(flags, function (flag) {
-            RemoteOperations.run(flag);
         });
         cleanMemory();
     }

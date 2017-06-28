@@ -30,14 +30,16 @@ export = {
             }
         });
 
+        _.each(flags, (flag: Flag) => {
+            RemoteOperations.run(flag);
+        });
+
         _.each(myRooms, (room: Room) => {
             SpawnManager.run(room);
             TowerManager.run(room);
         });
 
-        _.each(flags, (flag:Flag) => {
-            RemoteOperations.run(flag);
-        });
+
 
         cleanMemory();
     }

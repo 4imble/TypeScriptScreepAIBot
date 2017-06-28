@@ -40,7 +40,7 @@ function manageCapturer(flag) {
     var capturer = _.find(Game.creeps, function (creep) { return flag.memory.capturer && creep.name == flag.memory.capturer; });
     if (!capturer) {
         var originSpawn = Game.spawns["OriginSpawn"];
-        if (originSpawn.room.energyCapacityAvailable >= MINUMNCOSTCAPTURER) {
+        if (originSpawn.room.energyAvailable >= MINUMNCOSTCAPTURER) {
             var creepName = originSpawn.createCreep(BodyCalulator.getCapturerBody(originSpawn.room), null, { role: "capturer" });
             flag.memory.capturer = creepName;
         }
@@ -66,11 +66,11 @@ module.exports = {
     run: function (flag) {
         if (flag.memory.type != "remote_mining")
             return;
-        manageCapturer(flag);
-        manageRemoteProtection(flag);
         if (flag.room) {
             manageBuilder(flag);
             manageRemoteMining(flag);
         }
+        manageCapturer(flag);
+        manageRemoteProtection(flag);
     }
 };
