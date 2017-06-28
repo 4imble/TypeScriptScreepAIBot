@@ -30,10 +30,12 @@ export = {
             }
         });
 
-        _.each(flags, (flag: Flag) => {
-            RemoteOperations.run(flag);
-        });
-
+console.log(Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length)
+        if (Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length >= 6) {
+            _.each(flags, (flag: Flag) => {
+                RemoteOperations.run(flag);
+            });
+        }
         _.each(myRooms, (room: Room) => {
             SpawnManager.run(room);
             TowerManager.run(room);

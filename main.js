@@ -44,9 +44,12 @@ module.exports = {
                 roleUpgrader.run(creep);
             }
         });
-        _.each(flags, function (flag) {
-            RemoteOperations.run(flag);
-        });
+        console.log(Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length);
+        if (Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length >= 6) {
+            _.each(flags, function (flag) {
+                RemoteOperations.run(flag);
+            });
+        }
         _.each(myRooms, function (room) {
             SpawnManager.run(room);
             TowerManager.run(room);
