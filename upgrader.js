@@ -15,11 +15,14 @@ function collectFromStorage(creep, storage) {
 }
 module.exports = {
     run: function (creep) {
-        var controller = creep.room.controller;
+        var controller = Game.rooms[creep.memory.room].controller;
         var storage = controller.pos.findInRange(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
-        upgradeController(creep, controller, storage);
-        if (storage) {
-            collectFromStorage(creep, storage);
+        creep.moveTo(controller, { visualizePathStyle: { stroke: '#ffffff' } });
+        if (creep.room == controller.room) {
+            upgradeController(creep, controller, storage);
+            if (storage) {
+                collectFromStorage(creep, storage);
+            }
         }
     }
 };

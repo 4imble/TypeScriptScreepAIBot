@@ -26,9 +26,11 @@ function getTarget(creep) {
     }
     else {
         var room = creep.room.controller.my ? creep.room : Game.spawns["OriginSpawn"].room;
-        var emptyExtensionOrSpawn = _.find(room.find(FIND_STRUCTURES), function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
-            || struct.structureType == STRUCTURE_SPAWN)
-            && struct.energy < struct.energyCapacity); });
+        var emptyExtensionOrSpawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
+                || struct.structureType == STRUCTURE_SPAWN)
+                && struct.energy < struct.energyCapacity); }
+        });
         var remoteBuilderRequestingEnergy = _.find(creep.room.find(FIND_MY_CREEPS), function (creep) {
             return creep.memory.role == "builder" && creep.memory.job == "requesting_energy" && creep.carry.energy < creep.carryCapacity;
         });
@@ -39,6 +41,10 @@ function getTarget(creep) {
         var target = remoteBuilderRequestingEnergy || emptyExtensionOrSpawn || mostEmptyWorkerRequestingEnergy || room.storage;
         if (target)
             creep.memory.target = target.id;
+        if (_.find(creep.room.find(FIND_FLAGS), function (flag) { return flag.color == COLOR_GREEN; })) {
+            console.log(mostEmptyWorkerRequestingEnergy);
+            return mostEmptyWorkerRequestingEnergy;
+        }
         return target;
     }
 }

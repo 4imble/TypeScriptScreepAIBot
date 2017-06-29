@@ -1,5 +1,9 @@
 export = {
     run: function (creep: Creep, flag: Flag) {
+        var spawn = _.find(Game.spawns, (spawn) => spawn.room == flag.room);
+        if (spawn)
+            creep.memory.role = "upgrader";
+
         creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
 
         if (creep.room == flag.room) {
@@ -8,6 +12,8 @@ export = {
                 constructStructure(creep, construction);
             else
                 repairStructures(creep);
+
+            creep.moveTo(creep);
         }
     }
 };

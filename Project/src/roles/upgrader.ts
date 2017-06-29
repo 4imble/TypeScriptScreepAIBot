@@ -1,12 +1,16 @@
 export = {
     run: function (creep: Creep) {
-        var controller = creep.room.controller;
+        var controller = Game.rooms[creep.memory.room].controller;
         var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
 
-        upgradeController(creep, controller, storage);
+        creep.moveTo(controller, { visualizePathStyle: { stroke: '#ffffff' } });
 
-        if (storage) {
-            collectFromStorage(creep, storage);
+        if (creep.room == controller.room) {
+            upgradeController(creep, controller, storage);
+
+            if (storage) {
+                collectFromStorage(creep, storage);
+            }
         }
     }
 };

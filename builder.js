@@ -32,6 +32,9 @@ function collectDroppedResource(creep, resource) {
 }
 module.exports = {
     run: function (creep, flag) {
+        var spawn = _.find(Game.spawns, function (spawn) { return spawn.room == flag.room; });
+        if (spawn)
+            creep.memory.role = "upgrader";
         creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
         if (creep.room == flag.room) {
             var construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
@@ -39,6 +42,7 @@ module.exports = {
                 constructStructure(creep, construction);
             else
                 repairStructures(creep);
+            creep.moveTo(creep);
         }
     }
 };

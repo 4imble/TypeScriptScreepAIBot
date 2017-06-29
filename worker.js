@@ -39,10 +39,12 @@ function collectFromStorage(creep, storage) {
 }
 module.exports = {
     run: function (creep) {
-        var controller = creep.room.controller;
+        var room = Game.rooms[creep.memory.room];
+        var controller = room.controller;
         var storage = controller.pos.findInRange(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
-        var emptyTower = _.find(creep.room.find(FIND_STRUCTURES), function (struct) { return struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity; });
-        var construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        var emptyTower = _.find(room.find(FIND_STRUCTURES), function (struct) { return struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity; });
+        var construction = controller.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        creep.moveTo(controller, { visualizePathStyle: { stroke: '#9af441' } });
         calulateJob(creep, emptyTower, construction, storage);
         if (creep.memory.job == "upgrading") {
             upgradeController(creep, controller, storage);

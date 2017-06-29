@@ -8,14 +8,13 @@ import RemoteOperations = require('./remoteOperations');
 
 export = {
     loop: () => {
-        var myRooms = _.filter(Game.rooms, (room: Room) => room.controller.my);
+        var myRooms = _.filter(Game.rooms, (room: Room) => room.controller.my && room.energyAvailable);
         var flagRooms = _.map(_.filter(Game.flags, (flag: Flag) => flag.room != undefined), (flag: Flag) => flag.room);
         var myCreeps = _.filter(Game.creeps, (creep: Creep) => creep.my);
         var flags = _.filter(Game.flags, (flag: Flag) => flag.memory.type != undefined);
 
         _.each(myCreeps, (creep: Creep) => {
-            //recycleCreep(creep);
-
+                // recycleCreep(creep);
             if (creep.memory.role == 'harvester') {
                 roleHarvester.run(creep);
             }
@@ -30,7 +29,6 @@ export = {
             }
         });
 
-console.log(Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length)
         if (Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length >= 6) {
             _.each(flags, (flag: Flag) => {
                 RemoteOperations.run(flag);

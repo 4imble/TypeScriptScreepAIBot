@@ -1,10 +1,12 @@
 export = {
     run: function (creep: Creep) {
-        var controller = creep.room.controller;
+        var room = Game.rooms[creep.memory.room];
+        var controller = room.controller;
         var storage = controller.pos.findInRange<Storage>(FIND_STRUCTURES, 5, { filter: { structureType: STRUCTURE_STORAGE } })[0];
-        var emptyTower = _.find(creep.room.find<Tower>(FIND_STRUCTURES), (struct: Tower) => struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity);
-        var construction = creep.pos.findClosestByRange<ConstructionSite>(FIND_CONSTRUCTION_SITES);
+        var emptyTower = _.find(room.find<Tower>(FIND_STRUCTURES), (struct: Tower) => struct.structureType == STRUCTURE_TOWER && struct.energy < struct.energyCapacity);
+        var construction = controller.pos.findClosestByRange<ConstructionSite>(FIND_CONSTRUCTION_SITES);
 
+        creep.moveTo(controller, { visualizePathStyle: { stroke: '#9af441' } });
         calulateJob(creep, emptyTower, construction, storage);
 
         if (creep.memory.job == "upgrading") {

@@ -23,7 +23,7 @@ var BodyCalculator = (function () {
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.getProtectorBody = function (room) {
-            var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE];
+            var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE, MOVE];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
         this.calculateCost = function (body) {

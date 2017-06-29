@@ -30,7 +30,7 @@ class BodyCalculator {
     }
 
     getProtectorBody = (room: Room): string[] => {
-        var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE];
+        var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE, MOVE];
 
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }

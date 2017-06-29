@@ -26,7 +26,7 @@ function recycleCreep(creep) {
 }
 module.exports = {
     loop: function () {
-        var myRooms = _.filter(Game.rooms, function (room) { return room.controller.my; });
+        var myRooms = _.filter(Game.rooms, function (room) { return room.controller.my && room.energyAvailable; });
         var flagRooms = _.map(_.filter(Game.flags, function (flag) { return flag.room != undefined; }), function (flag) { return flag.room; });
         var myCreeps = _.filter(Game.creeps, function (creep) { return creep.my; });
         var flags = _.filter(Game.flags, function (flag) { return flag.memory.type != undefined; });
@@ -44,7 +44,6 @@ module.exports = {
                 roleUpgrader.run(creep);
             }
         });
-        console.log(Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length);
         if (Game.spawns["OriginSpawn"].room.find(FIND_CREEPS).length >= 6) {
             _.each(flags, function (flag) {
                 RemoteOperations.run(flag);
