@@ -25,7 +25,7 @@ function getTarget(creep) {
         return Game.getObjectById(creep.memory.target);
     }
     else {
-        var room = creep.room.controller.my ? creep.room : Game.spawns["OriginSpawn"].room;
+        var room = Game.rooms[creep.memory.room];
         var emptyExtensionOrSpawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function (struct) { return ((struct.structureType == STRUCTURE_EXTENSION
                 || struct.structureType == STRUCTURE_SPAWN)

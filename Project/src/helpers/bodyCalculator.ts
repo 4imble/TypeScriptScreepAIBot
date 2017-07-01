@@ -35,6 +35,12 @@ class BodyCalculator {
         return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
     }
 
+    getHealerBody = (room: Room): string[] => {
+        var bodyTemplate = [MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE];
+
+        return this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+    }
+
     calculateCost = (body: string[]): number => {
         return _.sum(body.map((b) => BODYPART_COST[b]));
     }
@@ -42,7 +48,7 @@ class BodyCalculator {
     private makeBestBodyCurrentlyPossible(room: Room, bodyTemplate: string[]): string[] {
         var desiredCost = room.find(FIND_MY_CREEPS).length < 3 ? SPAWN_ENERGY_CAPACITY : room.energyCapacityAvailable;
 
-        while (this.calculateCost(bodyTemplate) > desiredCost) {
+        while (this.calculateCost(bodyTemplate) > desiredCost && this.calculateCost(bodyTemplate) % 2 == 0) {
             bodyTemplate = _.dropRight(bodyTemplate);
         }
 

@@ -14,7 +14,7 @@ module.exports = {
             else {
                 var repairs = _.filter(tower.room.find(FIND_STRUCTURES), function (struct) {
                     return struct.hits < (struct.hitsMax / 4)
-                        && !(struct.structureType == STRUCTURE_WALL && struct.hits > 50000)
+                        && !(struct.structureType == STRUCTURE_WALL && struct.hits > 30000)
                         && !(struct.structureType == STRUCTURE_RAMPART && struct.hits > 49000);
                 });
                 repairs.sort(function (a, b) { return a.hits - b.hits; });

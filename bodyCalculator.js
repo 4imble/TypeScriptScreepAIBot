@@ -26,13 +26,17 @@ var BodyCalculator = (function () {
             var bodyTemplate = [MOVE, RANGED_ATTACK, ATTACK, RANGED_ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, TOUGH, MOVE, TOUGH, MOVE, MOVE];
             return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
         };
+        this.getHealerBody = function (room) {
+            var bodyTemplate = [MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE];
+            return _this.makeBestBodyCurrentlyPossible(room, bodyTemplate);
+        };
         this.calculateCost = function (body) {
             return _.sum(body.map(function (b) { return BODYPART_COST[b]; }));
         };
     }
     BodyCalculator.prototype.makeBestBodyCurrentlyPossible = function (room, bodyTemplate) {
         var desiredCost = room.find(FIND_MY_CREEPS).length < 3 ? SPAWN_ENERGY_CAPACITY : room.energyCapacityAvailable;
-        while (this.calculateCost(bodyTemplate) > desiredCost) {
+        while (this.calculateCost(bodyTemplate) > desiredCost && this.calculateCost(bodyTemplate) % 2 == 0) {
             bodyTemplate = _.dropRight(bodyTemplate);
         }
         return bodyTemplate.reverse();

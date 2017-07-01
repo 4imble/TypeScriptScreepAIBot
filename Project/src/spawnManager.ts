@@ -9,8 +9,8 @@ class SpawnManager {
 }
 
 function assignWorkers(room: Room, spawn: Spawn) {
-        var roomSources = room.find<Source>(FIND_SOURCES);
-        var roomCreeps = room.find<Creep>(FIND_MY_CREEPS);
+    var roomSources = room.find<Source>(FIND_SOURCES);
+    var roomCreeps = room.find<Creep>(FIND_MY_CREEPS);
 
     for (let source of roomSources) {
         if (!_.any(Game.creeps, creep => creep.memory.sourceid == source.id && creep.memory.role == "harvester")) {
@@ -29,10 +29,13 @@ function assignWorkers(room: Room, spawn: Spawn) {
         console.log("make upgrader");
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "upgrader", room: room.name });
     }
-    else if (_.filter(roomCreeps, creep => creep.memory.room == room.name && creep.memory.role == "worker").length < 3) {
+    else if (_.filter(roomCreeps, creep => creep.memory.room == room.name && creep.memory.role == "worker").length < getOptimalWorkerCount(room)) {
         console.log("worker");
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker", job: "requesting_energy", room: room.name });
     }
 }
 
+function getOptimalWorkerCount(room: Room): number {
+    return room.controller.level + 1;
+}
 export = new SpawnManager();

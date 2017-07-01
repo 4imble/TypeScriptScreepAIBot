@@ -3,6 +3,7 @@ var BodyCalulator = require("./bodyCalculator");
 var roleCapturer = require("./capturer");
 var roleBuilder = require("./builder");
 var roleProtector = require("./protector");
+var roleHealer = require("./healer");
 function manageUpgrading(flag) {
     var spawn = _.find(Game.spawns, function (spawn) { return spawn.room == flag.room; });
     if (spawn)
@@ -12,6 +13,16 @@ function manageUpgrading(flag) {
         console.log("remote worker");
         originSpawn.createCreep(BodyCalulator.getWorkerBody(originSpawn.room), null, { role: "worker", job: "requesting_energy", room: flag.room.name });
     }
+}
+function manageRemoteHealing(flag) {
+    var healer = _.find(Game.creeps, function (creep) { return flag.memory.healer && creep.name == flag.memory.healer; });
+    if (!healer) {
+        var originSpawn = Game.spawns[flag.memory.spawn];
+        var creepName = originSpawn.createCreep(BodyCalulator.getHealerBody(originSpawn.room), null, { role: "healer" });
+        flag.memory.healer = creepName;
+        return;
+    }
+    roleHealer.run(healer, flag);
 }
 function manageRemoteProtection(flag) {
     var protector = _.find(Game.creeps, function (creep) { return flag.memory.protector && creep.name == flag.memory.protector; });
@@ -29,12 +40,12 @@ function manageRemoteMining(flag) {
     var _loop_1 = function (source) {
         if (!_.any(Game.creeps, function (creep) { return creep.memory.sourceid == source.id && creep.memory.role == "harvester"; })) {
             console.log("make remote harverster" + source.id);
-            originSpawn.createCreep(BodyCalulator.getHarvesterBody(originSpawn.room), null, { role: "harvester", sourceid: source.id, room: flag.room });
+            originSpawn.createCreep(BodyCalulator.getHarvesterBody(originSpawn.room), null, { role: "harvester", sourceid: source.id, room: flag.room.name });
             return { value: void 0 };
         }
         else if (_.filter(Game.creeps, function (creep) { return creep.memory.sourceid == source.id && creep.memory.role == "mule"; }).length < 2) {
             console.log("make remote mule" + source.id);
-            originSpawn.createCreep(BodyCalulator.getMuleBody(originSpawn.room), null, { role: "mule", sourceid: source.id, room: flag.room });
+            originSpawn.createCreep(BodyCalulator.getMuleBody(originSpawn.room), null, { role: "mule", sourceid: source.id, room: flag.room.name });
             return { value: void 0 };
         }
     };
@@ -86,6 +97,7 @@ module.exports = {
         else {
             manageCapturer(flag);
         }
+        manageRemoteHealing(flag);
         manageRemoteProtection(flag);
     }
 };

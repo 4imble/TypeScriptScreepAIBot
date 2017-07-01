@@ -16,7 +16,7 @@ export = {
                 var repairs = _.filter(tower.room.find<Structure>(FIND_STRUCTURES),
                     (struct: Structure) => 
                         struct.hits < (struct.hitsMax / 4) 
-                        && !(struct.structureType == STRUCTURE_WALL && struct.hits > 50000 )
+                        && !(struct.structureType == STRUCTURE_WALL && struct.hits > 30000 )
                         && !(struct.structureType == STRUCTURE_RAMPART && struct.hits > 49000 ));
 
                 repairs.sort((a, b) => a.hits - b.hits);

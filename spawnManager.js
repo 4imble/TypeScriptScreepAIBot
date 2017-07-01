@@ -35,9 +35,12 @@ function assignWorkers(room, spawn) {
         console.log("make upgrader");
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "upgrader", room: room.name });
     }
-    else if (_.filter(roomCreeps, function (creep) { return creep.memory.room == room.name && creep.memory.role == "worker"; }).length < 3) {
+    else if (_.filter(roomCreeps, function (creep) { return creep.memory.room == room.name && creep.memory.role == "worker"; }).length < getOptimalWorkerCount(room)) {
         console.log("worker");
         spawn.createCreep(BodyCalulator.getWorkerBody(spawn.room), null, { role: "worker", job: "requesting_energy", room: room.name });
     }
+}
+function getOptimalWorkerCount(room) {
+    return room.controller.level + 1;
 }
 module.exports = new SpawnManager();
