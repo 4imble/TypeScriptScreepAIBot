@@ -1,6 +1,6 @@
 "use strict";
 function healFriendly(creep, hurtFriendlyCreeps) {
-    var mostHurtProtector = hurtFriendlyCreeps.sort(function (a, b) { return (a.hits - a.hitsMax) - (b.hits - b.hitsMax); })[0];
+    var mostHurtProtector = _.sortBy(hurtFriendlyCreeps, function (creep) { return creep.hits - creep.hitsMax; })[0];
     creep.heal(mostHurtProtector);
     creep.moveTo(mostHurtProtector, { visualizePathStyle: { stroke: '#9af441' } });
 }

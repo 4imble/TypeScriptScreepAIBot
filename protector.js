@@ -1,6 +1,6 @@
 "use strict";
 function attackEnemy(creep, enemyCreeps) {
-    var weakestEnemy = enemyCreeps.sort(function (a, b) { return a.hits - b.hits; })[0];
+    var weakestEnemy = _.sortBy(enemyCreeps, function (creep) { return creep.hits; })[0];
     if (creep.attack(weakestEnemy) == ERR_NOT_IN_RANGE) {
         if (creep.rangedAttack(weakestEnemy) == ERR_NOT_IN_RANGE) {
             creep.moveTo(weakestEnemy, { visualizePathStyle: { stroke: '#9af441' } });

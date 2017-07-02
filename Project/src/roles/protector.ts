@@ -9,7 +9,7 @@ export = {
 };
 
 function attackEnemy(creep: Creep, enemyCreeps: Creep[]) {
-    var weakestEnemy = enemyCreeps.sort((a, b) => a.hits - b.hits)[0];
+    var weakestEnemy = _.sortBy(enemyCreeps, (creep:Creep) => creep.hits)[0];
 
     if (creep.attack(weakestEnemy) == ERR_NOT_IN_RANGE) {
         if (creep.rangedAttack(weakestEnemy) == ERR_NOT_IN_RANGE) {
