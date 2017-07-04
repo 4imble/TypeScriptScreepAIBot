@@ -3,7 +3,8 @@ import BodyCalulator = require('./helpers/bodyCalculator');
 class SpawnManager {
     run = (room: Room): void => {
         var spawn = room.find<Spawn>(FIND_MY_SPAWNS)[0];
-        if (!spawn.spawning)
+        console.log(spawn);
+        if (spawn && !spawn.spawning)
             assignWorkers(room, spawn);
     }
 }
@@ -36,6 +37,7 @@ function assignWorkers(room: Room, spawn: Spawn) {
 }
 
 function getOptimalWorkerCount(room: Room): number {
-    return room.controller.level + 1;
+    return 3;
+    //return room.controller.level;
 }
 export = new SpawnManager();

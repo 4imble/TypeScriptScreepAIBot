@@ -8,12 +8,13 @@ import RemoteOperations = require('./remoteOperations');
 
 export = {
     loop: () => {
-        var myRooms = _.filter(Game.rooms, (room: Room) => room.controller && room.controller.my && room.energyAvailable);
+        var myRooms = _.filter(Game.rooms, (room: Room) => room.controller && room.controller.my && roomHasMySpawn(room));
         var flagRooms = _.map(_.filter(Game.flags, (flag: Flag) => flag.room != undefined), (flag: Flag) => flag.room);
         var myCreeps = _.filter(Game.creeps, (creep: Creep) => creep.my);
         var flags = _.filter(Game.flags, (flag: Flag) => flag.memory.type != undefined);
 
         _.each(myCreeps, (creep: Creep) => {
+            
             // recycleCreep(creep);
             if (creep.memory.role == 'harvester') {
                 roleHarvester.run(creep);
@@ -35,6 +36,7 @@ export = {
             }
         });
         _.each(myRooms, (room: Room) => {
+            console.log(room);
             SpawnManager.run(room);
             TowerManager.run(room);
         });
@@ -62,4 +64,8 @@ function recycleCreep(creep: Creep) {
     creep.moveTo(spawn, { visualizePathStyle: { stroke: '#ffffff' } });
     var creeps = spawn.pos.findInRange(FIND_MY_CREEPS, 1);
     _.each(creeps, (x: Creep) => spawn.recycleCreep(x));
+}
+
+function roomHasMySpawn(room: Room){
+    return _.find(room.find(FIND_MY_SPAWNS));
 }
