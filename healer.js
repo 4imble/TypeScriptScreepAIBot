@@ -7,9 +7,11 @@ function healFriendly(creep, hurtFriendlyCreeps) {
 module.exports = {
     run: function (creep, flag) {
         creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffffff' } });
-        if (flag.room && creep.room == flag.room) {
-            var protectorCreeps = flag.room.find(FIND_MY_CREEPS, { filter: function (creep) { return creep.memory.role == "protector"; } });
-            healFriendly(creep, protectorCreeps);
+        if (flag) {
+            if (flag.room && creep.room != flag.room)
+                return;
         }
+        var protectorCreeps = creep.room.find(FIND_MY_CREEPS, { filter: function (creep) { return creep.memory.role == "protector"; } });
+        healFriendly(creep, protectorCreeps);
     }
 };

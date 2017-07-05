@@ -31,14 +31,15 @@ function refillTower(creep, emptyTower, storage) {
         creep.memory.job = storage ? "collecting" : "requesting_energy";
 }
 function collectFromStorage(creep, storage) {
-    if (tooFarFromStorage)
+    if (tooFarFromStorage(creep, storage)) {
         return;
+    }
     if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(storage, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 }
 function tooFarFromStorage(creep, storage) {
-    return creep.pos.getRangeTo(storage) < 10;
+    return creep.pos.getRangeTo(storage) > 10;
 }
 module.exports = {
     run: function (creep) {
@@ -55,7 +56,6 @@ module.exports = {
         }
         else if (creep.memory.job == "tower_refilling") {
             refillTower(creep, mostEmptyTower, storage);
-            creep.say("me");
         }
         else if (creep.memory.job == "constructing") {
             constructStructure(creep, construction);

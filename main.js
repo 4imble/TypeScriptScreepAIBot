@@ -24,9 +24,12 @@ function recycleCreep(creep) {
     var creeps = spawn.pos.findInRange(FIND_MY_CREEPS, 1);
     _.each(creeps, function (x) { return spawn.recycleCreep(x); });
 }
+function roomHasMySpawn(room) {
+    return _.find(room.find(FIND_MY_SPAWNS));
+}
 module.exports = {
     loop: function () {
-        var myRooms = _.filter(Game.rooms, function (room) { return room.controller && room.controller.my && room.energyAvailable; });
+        var myRooms = _.filter(Game.rooms, function (room) { return room.controller && room.controller.my && roomHasMySpawn(room); });
         var flagRooms = _.map(_.filter(Game.flags, function (flag) { return flag.room != undefined; }), function (flag) { return flag.room; });
         var myCreeps = _.filter(Game.creeps, function (creep) { return creep.my; });
         var flags = _.filter(Game.flags, function (flag) { return flag.memory.type != undefined; });
@@ -50,6 +53,7 @@ module.exports = {
             }
         });
         _.each(myRooms, function (room) {
+            console.log(room);
             SpawnManager.run(room);
             TowerManager.run(room);
         });

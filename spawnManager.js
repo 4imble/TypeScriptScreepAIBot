@@ -4,7 +4,8 @@ var SpawnManager = (function () {
     function SpawnManager() {
         this.run = function (room) {
             var spawn = room.find(FIND_MY_SPAWNS)[0];
-            if (!spawn.spawning)
+            console.log(spawn);
+            if (spawn && !spawn.spawning)
                 assignWorkers(room, spawn);
         };
     }
@@ -41,6 +42,6 @@ function assignWorkers(room, spawn) {
     }
 }
 function getOptimalWorkerCount(room) {
-    return room.controller.level + 1;
+    return 3;
 }
 module.exports = new SpawnManager();
